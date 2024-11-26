@@ -3,6 +3,9 @@ from datetime import datetime
 import os
 import boto3
 import io
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def generate_file():
