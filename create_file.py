@@ -29,5 +29,6 @@ def upload_to_s3(file_name, file_content):
     s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
     print(f"Uploaded {file_name} to S3 using boto3")
 
+
 if __name__ == "__main__":
     generate_file()
