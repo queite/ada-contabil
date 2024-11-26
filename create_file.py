@@ -4,6 +4,7 @@ import os
 import boto3
 import io
 
+
 def generate_file():
     # Generate a random number of lines
     num_lines = random.randint(1, 100)
