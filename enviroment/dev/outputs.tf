@@ -1,5 +1,5 @@
 output "S3_BUCKET_NAME" {
-  value       = aws_s3_bucket.s3_bucket.bucket_domain_name
+  value       = aws_s3_bucket.s3_bucket.bucket
   description = "S3 Bucket Name"
 }
 
