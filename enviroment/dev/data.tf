@@ -47,7 +47,6 @@ data "aws_iam_policy_document" "allow_sqs_elasticache_policy_doc" {
   }
 }
 
-
 data "archive_file" "lambda" {
   type        = "zip"
   source_file = "lambda.py"

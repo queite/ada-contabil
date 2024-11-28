@@ -24,16 +24,11 @@ output "SQS_QUEUE_ARN" {
 }
 
 output "ELASTICACHE_CLUSTER_ENDPOINT" {
-  value       = aws_elasticache_cluster.example.cache_nodes[0].address
+  value       = aws_elasticache_cluster.contabil.cache_nodes[0].address
   description = "Elasticache Cluster Endpoint"
 }
 
-output "ELASTICACHE_CLUSTER_PORT" {
-  value       = aws_elasticache_cluster.example.cache_nodes[0].port
-  description = "Elasticache Cluster Port"
-}
-
 output "LAMBDA_FUNCTION_ARN" {
-  value       = aws_lambda_function.example.arn
+  value       = aws_lambda_function.process_s3_file
   description = "Lambda Function ARN"
 }

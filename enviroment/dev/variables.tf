@@ -28,11 +28,6 @@ variable "elasticache_node_type" {
   default     = "cache.t2.micro"
 }
 
-variable "elasticache_num_cache_nodes" {
-  type        = number
-  default     = 1
-}
-
 variable "elasticache_parameter_group_name" {
   type        = string
   default     = "default.memcached1.4"
