@@ -24,7 +24,7 @@ def generate_file():
         file_content.write(f"This is line {i+1} of text.\n")
 
     print(f"Generated file: {file_name} with {num_lines} lines")
-    upload_to_s3(file_name, file_content.getvalue())
+    upload_to_s3(file_name, file_content.getvalue(), num_lines)
 
 
 def upload_to_s3(file_name, file_content, num_lines):
