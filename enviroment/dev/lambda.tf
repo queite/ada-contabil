@@ -17,48 +17,13 @@ resource "aws_iam_role" "iam_for_lambda" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-resource "aws_iam_policy" "lambda_exec_policy" {
-  name        = "lambda_exec_policy"
-  description = "IAM policy for Lambda execution"
-  policy      = data.aws_iam_policy_document.lambda_exec_policy.json
+resource "aws_iam_policy" "allow_sqs_elasticache_policy" {
+  name        = "allow_sqs_elasticache_policy"
+  description = "Combined IAM policy for Lambda execution"
+  policy      = data.aws_iam_policy_document.allow_sqs_elasticache_policy_doc.json
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_exec_attach" {
-  role       = aws_iam_role.lambda_exec.name
-  policy_arn = aws_iam_policy.lambda_exec_policy.arn
-}
-
-data "aws_iam_policy_document" "lambda_exec_policy" {
-  statement {
-    actions = [
-      "sqs:ReceiveMessage",
-      "sqs:DeleteMessage",
-      "sqs:GetQueueAttributes"
-    ]
-    resources = [
-      aws_sqs_queue.terraform_queue.arn
-    ]
-  }
-}
-
-resource "aws_iam_policy" "lambda_elasticache_policy" {
-  name        = "lambda_elasticache_policy"
-  description = "IAM policy for Lambda to access ElastiCache"
-  policy      = data.aws_iam_policy_document.lambda_elasticache_policy.json
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_elasticache_attach" {
+resource "aws_iam_role_policy_attachment" "allow_sqs_elasticache_policy_attach" {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.lambda_elasticache_policy.arn
-}
-
-data "aws_iam_policy_document" "lambda_elasticache_policy" {
-  statement {
-    actions = [
-      "elasticache:*"
-    ]
-    resources = [
-      "*"
-    ]
-  }
+  policy_arn = aws_iam_policy.allow_sqs_elasticache_policy
 }
