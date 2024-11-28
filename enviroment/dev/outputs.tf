@@ -22,3 +22,18 @@ output "SQS_QUEUE_ARN" {
   value       =aws_sqs_queue.terraform_queue.arn
   description = "SNS Queue ARN"
 }
+
+output "ELASTICACHE_CLUSTER_ENDPOINT" {
+  value       = aws_elasticache_cluster.example.cache_nodes[0].address
+  description = "Elasticache Cluster Endpoint"
+}
+
+output "ELASTICACHE_CLUSTER_PORT" {
+  value       = aws_elasticache_cluster.example.cache_nodes[0].port
+  description = "Elasticache Cluster Port"
+}
+
+output "LAMBDA_FUNCTION_ARN" {
+  value       = aws_lambda_function.example.arn
+  description = "Lambda Function ARN"
+}
