@@ -3,6 +3,6 @@ resource "aws_elasticache_cluster" "contabil" {
   engine               = var.elasticache_engine
   node_type            = var.elasticache_node_type
   num_cache_nodes      = 1
-  parameter_group_name = var.elasticache_parameter_group_name
+  parameter_group_name = "default.redis7"
   port                 = 6379
 }

@@ -27,8 +27,3 @@ variable "elasticache_node_type" {
   type        = string
   default     = "cache.t2.micro"
 }
-
-variable "elasticache_parameter_group_name" {
-  type        = string
-  default     = "default.redis6.x"
-}
