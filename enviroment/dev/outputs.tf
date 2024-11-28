@@ -29,6 +29,6 @@ output "ELASTICACHE_CLUSTER_ENDPOINT" {
 }
 
 output "LAMBDA_FUNCTION_ARN" {
-  value       = aws_lambda_function.process_s3_file
+  value       = aws_lambda_function.process_s3_file.arn
   description = "Lambda Function ARN"
 }
