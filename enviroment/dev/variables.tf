@@ -20,7 +20,7 @@ variable "elasticache_cluster_id" {
 
 variable "elasticache_engine" {
   type        = string
-  default     = "memcached"
+  default     = "redis"
 }
 
 variable "elasticache_node_type" {
@@ -30,5 +30,5 @@ variable "elasticache_node_type" {
 
 variable "elasticache_parameter_group_name" {
   type        = string
-  default     = "default.memcached1.4"
+  default     = "default.redis6.x"
 }
