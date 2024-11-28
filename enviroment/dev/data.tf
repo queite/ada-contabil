@@ -17,3 +17,39 @@ data "aws_iam_policy_document" "topic" {
     }
   }
 }
+
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_iam_policy_document" "allow_sqs_elasticache_policy_doc" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "elasticache:*"
+    ]
+    resources = [
+      aws_sqs_queue.terraform_queue.arn,
+      "*"
+    ]
+  }
+}
+
+
+data "archive_file" "lambda" {
+  type        = "zip"
+  source_file = "lambda.py"
+  output_path = "lambda_function_payload.zip"
+}
