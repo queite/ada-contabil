@@ -1,13 +1,17 @@
-import boto3
 import os
 import json
 import redis
 
+
 def lambda_handler(event, context):
     # Connect to ElastiCache
-    redis_host = os.getenv('ELASTICACHE_HOST')
+    redis_host = os.getenv('ELASTICACHE_CLUSTER_ENDPOINT')
     redis_port = os.getenv('ELASTICACHE_PORT', 6379)
-    redis_client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
+    redis_client = redis.StrictRedis(
+        host=redis_host,
+        port=redis_port,
+        decode_responses=True
+    )
 
     # Process each SQS message
     for record in event['Records']:
@@ -20,5 +24,6 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Successfully processed SQS messages and stored data in ElastiCache')
+        'body': json.dumps('Successfully processed SQS messages and stored \
+                            data in ElastiCache')
     }
