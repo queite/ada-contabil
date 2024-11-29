@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "topic" {
       identifiers = ["s3.amazonaws.com"]
     }
 
-    actions   = ["SNS:Publish"]
+    actions   = ["sns:Publish"]
     resources = [aws_sns_topic.upload-file-to-s3.arn]
 
     condition {
@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "allow_sqs_elasticache_policy_doc" {
       "elasticache:*"
     ]
     resources = [
-      aws_sqs_queue.terraform_queue.arn,
+      aws_sqs_queue.new_object_queue.arn,
       "*"
     ]
   }

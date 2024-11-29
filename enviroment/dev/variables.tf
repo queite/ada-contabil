@@ -27,3 +27,4 @@ variable "elasticache_node_type" {
   type        = string
   default     = "cache.t2.micro"
 }
+

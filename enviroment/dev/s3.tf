@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "s3_bucket" {
   bucket = var.bucket_name
 }
 
-resource "aws_s3_bucket_notification" "bucket_upload_notification" {
+resource "aws_s3_bucket_notification" "new_object_notify" {
   bucket = aws_s3_bucket.s3_bucket.id
   depends_on = [aws_sns_topic_policy.s3_sns_policy]
 
