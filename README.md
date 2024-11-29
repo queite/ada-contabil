@@ -44,9 +44,38 @@ Notificar Via SNS: Ao enviar o arquivo para o S3, uma notificação é enviada p
 Processamento com SQS e Lambda: Um Lambda é acionado por uma fila do SQS que está inscrita no tópico SNS. O Lambda processa a mensagem, verifica o arquivo no S3 e grava as informações no ElastiCache.
 
 ## Como rodar
-Clone
-Instalação
-AWS configure
-Variáveis env
-Script recursos
-Script create_file.py
+Clone o repositório:
+```
+git clone git@github.com:queite/ada-contabil.git
+```
+Instalação:
+- Na raiz do projeto digite:
+```
+pip install -r requirements.txt
+```
+AWS configure:
+- Certifique-se de estar conectado a AWS com as credencias corretas.
+- Para conectar use i CLI da AWS e rode:
+```
+aws configure
+```
+Entre na pasta do terraform:
+```
+cd terraform/dev
+```
+Execute o terraform
+```
+terraform init
+terraform apply
+```
+Após conclusão crie o .env:
+- Para isso acesse a pasta util e rode o comando abaixo no terminal
+```
+python update_env.py
+```
+*Isso criará o arquivo de variáveis de ambiente*<br>
+
+Rode o script na raiz do projeto
+```
+python create_file.py
+```
