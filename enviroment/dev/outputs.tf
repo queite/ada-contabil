@@ -13,13 +13,13 @@ output "SNS_TOPIC_ARN" {
   description = "SNS Topic ARN"
 }
 
-output "SNS_SUBSCRIPTION_ARN" {
-  value = aws_sns_topic_subscription.s3_upload_sns_subs.arn
+output "SNS_TO_SQS_SUBSCRIPTION_ARN" {
+  value = aws_sns_topic_subscription.s3_upload_sns_to_sqs.arn
   description = "SNS Subscription ARN"
 }
 
 output "SQS_QUEUE_ARN" {
-  value       =aws_sqs_queue.terraform_queue.arn
+  value       =aws_sqs_queue.new_object_queue.arn
   description = "SNS Queue ARN"
 }
 
@@ -29,6 +29,6 @@ output "ELASTICACHE_CLUSTER_ENDPOINT" {
 }
 
 output "LAMBDA_FUNCTION_ARN" {
-  value       = aws_lambda_function.process_s3_file
+  value       = aws_lambda_function.process_s3_file.arn
   description = "Lambda Function ARN"
 }
