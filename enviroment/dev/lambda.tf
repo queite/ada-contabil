@@ -16,6 +16,11 @@ resource "aws_iam_role" "iam_for_lambda" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+resource "aws_iam_role_policy_attachment" "s3_full_access_attach" {
+  role       = aws_iam_role.iam_for_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 resource "aws_lambda_permission" "allow_bucket" {
   statement_id  = "AllowExecutionFromS3Bucket"
   action        = "lambda:InvokeFunction"
@@ -31,12 +36,19 @@ resource "aws_lambda_function" "process_s3_file" {
   handler          = "lambda.lambda_handler"
   source_code_hash = filebase64sha256(data.archive_file.lambda.output_path)
   runtime          = "python3.8"
+
+  environment {
+    variables = {
+      SNS_TOPIC_ARN = aws_sns_topic.upload-file-to-s3.arn
+    }
+  }
 }
 
 data "aws_iam_policy_document" "allow_sns_policy_doc" {
   statement {
     effect = "Allow"
     actions = [
+      "sns:Publish",
       "sns:ReceiveMessage",
       "sns:DeleteMessage",
     ]
