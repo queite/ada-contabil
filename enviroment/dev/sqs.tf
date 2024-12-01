@@ -16,4 +16,35 @@ resource "aws_sqs_queue" "new_object_queue" {
   tags = {
     Environment = "development"
   }
+
+  depends_on = [aws_sns_topic.upload-file-to-s3]
+}
+
+data "aws_iam_policy_document" "sqs_sns_policy" {
+  version = "2012-10-17"
+
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["sns.amazonaws.com"]
+    }
+
+    actions = ["SQS:SendMessage"]
+
+    resources = [aws_sqs_queue.new_object_queue.arn]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+
+      values = [aws_sns_topic.upload-file-to-s3.arn]
+    }
+  }
+}
+
+resource "aws_sqs_queue_policy" "new_object_queue_policy" {
+  queue_url = aws_sqs_queue.new_object_queue.id
+  policy    = data.aws_iam_policy_document.sqs_sns_policy.json
 }

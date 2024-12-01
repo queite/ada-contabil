@@ -5,10 +5,11 @@ resource "aws_s3_bucket" "s3_bucket" {
 
 resource "aws_s3_bucket_notification" "new_object_notify" {
   bucket = aws_s3_bucket.s3_bucket.id
-  depends_on = [aws_sns_topic_policy.s3_sns_policy]
 
-  topic {
-    topic_arn     = aws_sns_topic.upload-file-to-s3.arn
+  lambda_function  {
+    lambda_function_arn = aws_lambda_function.process_s3_file.arn
     events        = ["s3:ObjectCreated:*"]
   }
+
+  depends_on = [aws_lambda_function.process_s3_file]
 }
