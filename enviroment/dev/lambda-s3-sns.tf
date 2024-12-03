@@ -33,7 +33,7 @@ resource "aws_lambda_function" "process_s3_file" {
   filename         = data.archive_file.lambda.output_path
   function_name    = "process_s3_file"
   role             = aws_iam_role.iam_for_lambda.arn
-  handler          = "lambda.lambda_handler"
+  handler          = "lambda_s3_sns.lambda_handler"
   source_code_hash = filebase64sha256(data.archive_file.lambda.output_path)
   runtime          = "python3.8"
 

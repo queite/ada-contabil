@@ -24,7 +24,7 @@ resource "aws_lambda_function" "process_sqs_message" {
   filename         = data.archive_file.lambda_sqs_elasticache.output_path
   function_name    = "process_sqs_message"
   role             = aws_iam_role.iam_for_lambda_sqs_elasticache.arn
-  handler          = "lambda-sqs-elasticache.lambda_handler"
+  handler          = "lambda_sqs_elasticache.lambda_handler"
   source_code_hash = filebase64sha256(data.archive_file.lambda_sqs_elasticache.output_path)
   runtime          = "python3.8"
 
