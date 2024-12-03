@@ -1,12 +1,15 @@
-import boto3
 import json
 import os
 import redis
 
+
 def lambda_handler(event, context):
     # Connect to Elasticache
     elasticache_endpoint = os.getenv('ELASTICACHE_ENDPOINT')
-    r = redis.StrictRedis(host=elasticache_endpoint, port=6379, decode_responses=True)
+    r = redis.StrictRedis(
+        host=elasticache_endpoint,
+        port=6379,
+        decode_responses=True)
 
     for record in event['Records']:
         # Process SQS message

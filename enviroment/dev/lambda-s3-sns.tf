@@ -71,6 +71,6 @@ resource "aws_iam_role_policy_attachment" "allow_sns_policy_attach" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "../../lambda-s3-sns.py"
-  output_path = "./lambda-s3-sns.zip"
+  source_file = "../../lambda_s3_sns.py"
+  output_path = "./lambda_s3_sns.zip"
 }

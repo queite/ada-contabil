@@ -1,16 +1,3 @@
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
 resource "aws_iam_role" "iam_for_lambda_sqs_elasticache" {
   name = "iam_for_lambda_sqs_elasticache"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
@@ -24,6 +11,13 @@ resource "aws_iam_role_policy_attachment" "sqs_full_access_attach" {
 resource "aws_iam_role_policy_attachment" "elasticache_full_access_attach" {
   role       = aws_iam_role.iam_for_lambda_sqs_elasticache.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonElastiCacheFullAccess"
+}
+
+resource "aws_lambda_event_source_mapping" "sqs_trigger" {
+  event_source_arn = aws_sqs_queue.new_object_queue.arn
+  function_name    = aws_lambda_function.process_sqs_message.arn
+  batch_size       = 10
+  enabled          = true
 }
 
 resource "aws_lambda_function" "process_sqs_message" {
@@ -56,6 +50,6 @@ resource "aws_sqs_queue_policy" "allow_lambda_sqs_policy" {
 
 data "archive_file" "lambda_sqs_elasticache" {
   type        = "zip"
-  source_file = "../../lambda-sqs-elasticache.py"
-  output_path = "./lambda-sqs-elasticache.zip"
+  source_file = "../../lambda_sqs_elasticache.py"
+  output_path = "./lambda_sqs_elasticache.zip"
 }
