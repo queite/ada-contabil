@@ -5,12 +5,12 @@ variable "bucket_name" {
 
 variable "sns_topic_name" {
   type        = string
-  default     = "upload_files_to_s3"
+  default     = "upload-files-to-s3"
 }
 
 variable "upload_to_s3_queue_name" {
   type        = string
-  default     = "upload_to_s3_queue"
+  default     = "upload-to-s3-queue"
 }
 
 variable "elasticache_cluster_id" {
@@ -27,4 +27,3 @@ variable "elasticache_node_type" {
   type        = string
   default     = "cache.t2.micro"
 }
-
