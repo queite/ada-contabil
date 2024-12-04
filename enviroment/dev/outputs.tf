@@ -9,7 +9,7 @@ output "S3_BUCKET_ARN" {
 }
 
 output "SNS_TOPIC_ARN" {
-  value       = aws_sns_topic.upload-file-to-s3.arn
+  value       = aws_sns_topic.upload_file_to_s3.arn
   description = "SNS Topic ARN"
 }
 

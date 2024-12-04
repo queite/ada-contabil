@@ -39,7 +39,7 @@ resource "aws_lambda_function" "process_s3_file" {
 
   environment {
     variables = {
-      SNS_TOPIC_ARN = aws_sns_topic.upload-file-to-s3.arn
+      SNS_TOPIC_ARN = aws_sns_topic.upload_file_to_s3.arn
     }
   }
 }
@@ -53,13 +53,13 @@ data "aws_iam_policy_document" "allow_sns_policy_doc" {
       "sns:DeleteMessage",
     ]
     resources = [
-      aws_sns_topic.upload-file-to-s3.arn,
+      aws_sns_topic.upload_file_to_s3.arn
     ]
   }
 }
 
 resource "aws_iam_policy" "allow_sns_policy" {
-  name        = "allow_sns__policy"
+  name        = "allow_sns_policy"
   description = "Allow Lambda send message to SNS"
   policy      = data.aws_iam_policy_document.allow_sns_policy_doc.json
 }

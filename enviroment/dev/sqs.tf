@@ -17,7 +17,7 @@ resource "aws_sqs_queue" "new_object_queue" {
     Environment = "development"
   }
 
-  depends_on = [aws_sns_topic.upload-file-to-s3]
+  depends_on = [aws_sns_topic.upload_file_to_s3]
 }
 
 data "aws_iam_policy_document" "sqs_sns_policy" {
@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "sqs_sns_policy" {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
 
-      values = [aws_sns_topic.upload-file-to-s3.arn]
+      values = [aws_sns_topic.upload_file_to_s3.arn]
     }
   }
 }
