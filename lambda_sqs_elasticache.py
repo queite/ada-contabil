@@ -11,17 +11,30 @@ def lambda_handler(event, context):
         port=6379,
         decode_responses=True)
 
-    for record in event['Records']:
-        # Process SQS message
-        message_body = record['body']
-        message = json.loads(message_body)
+    # Process SQS message
+    record = event['Records'][0]
+    message_body = json.loads(record['body'])
+    message = json.loads(message_body['Message'])
+    print("message")
+    print(message)
 
-        # Save data to Elasticache
-        file_name = message['file_name']
-        num_lines = message['num_lines']
-        r.set(file_name, num_lines)
+    try:
+        r.ping()  # Testa a conexão
+        print("Conexão com Elasticache bem-sucedida")
+    except Exception as e:
+        print(f"Erro ao conectar ao Elasticache: {e}")
+
+    # Save data on Elasticache
+    file_name = message['file_name']
+    print(file_name)
+    num_lines = message['num_lines']
+    print(num_lines)
+    r.set(file_name, num_lines)
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Message processed and saved to Elasticache')
+        'body': json.dumps({
+            'file_name': file_name,
+            'num_lines': num_lines,
+            'message': "saved on elasticache"})
     }
