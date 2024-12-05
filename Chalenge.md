@@ -16,6 +16,6 @@ Crie uma solução que automatize a arquitetura em todo o seu fluxo, se baseando
 
 - Esse arquivo precisa ser enviado para um s3 de forma automatizada;
 
-- Usar S3, SNS, SQS, Lambda e Elasticache obrigatoriamente;
+- Usar S3, SNS, SQS e Lambda obrigatoriamente;
 
 - No banco de dados é obrigatório que seja gravado o nome do arquivo e o número de linhas contido.
