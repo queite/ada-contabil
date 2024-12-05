@@ -1,10 +1,10 @@
 # Lambda layer
-# resource "aws_lambda_layer_version" "redis_layer" {
-#   filename   = "redis.zip"
-#   layer_name = "redis"
+resource "aws_lambda_layer_version" "pymysql_layer" {
+  filename   = "pymysql.zip"
+  layer_name = "pymysql"
 
-#   compatible_runtimes = ["python3.8"]
-# }
+  compatible_runtimes = ["python3.8"]
+}
 
 # Lambda role
 data "aws_iam_policy_document" "sqs_rds_lambda_role" {
@@ -58,6 +58,40 @@ resource "aws_iam_role_policy_attachment" "rds_full_access_attach" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_full_access_attach" {
+  role       = aws_iam_role.iam_for_lambda_sqs_rds.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
+# Política para a Lambda
+data "aws_iam_policy_document" "lambda_network_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeSecurityGroups",
+      "ec2:CreateNetworkInterface",
+      "ec2:DeleteNetworkInterface",
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "lambda_network_policy" {
+  name        = "lambda_network_policy"
+  description = "Policy to allow Lambda to manage network interfaces"
+  policy      = data.aws_iam_policy_document.lambda_network_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_network_policy_attach" {
+  role       = aws_iam_role.iam_for_lambda_sqs_rds.name
+  policy_arn = aws_iam_policy.lambda_network_policy.arn
+}
+
 resource "aws_lambda_function" "save-on-rds" {
   filename         = data.archive_file.lambda_sqs_rds.output_path
   function_name    = "save-on-rds"
@@ -65,13 +99,13 @@ resource "aws_lambda_function" "save-on-rds" {
   handler          = "lambda_sqs_rds.lambda_handler"
   source_code_hash = filebase64sha256(data.archive_file.lambda_sqs_rds.output_path)
   runtime          = "python3.8"
-  timeout = 10
+  timeout = 60
 
   vpc_config {
     subnet_ids         = [aws_subnet.db_subnet_1.id, aws_subnet.db_subnet_2.id]
-    security_group_ids = [aws_security_group.db_sg.id] 
+    security_group_ids = [aws_security_group.db_sg.id]
   }
-  # layers           = [aws_lambda_layer_version.redis_layer.arn]
+  layers           = [aws_lambda_layer_version.pymysql_layer.arn]
 
   environment {
     variables = {
@@ -79,7 +113,7 @@ resource "aws_lambda_function" "save-on-rds" {
     }
   }
 
-  # depends_on = [ aws_lambda_layer_version.redis_layer ]
+  depends_on = [ aws_lambda_layer_version.pymysql_layer ]
 }
 
 resource "aws_lambda_permission" "allow_sqs" {
