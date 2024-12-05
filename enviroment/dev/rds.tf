@@ -50,6 +50,6 @@ resource "aws_secretsmanager_secret_version" "rds_secret" {
   secret_id     = aws_secretsmanager_secret.my_secret.id
   secret_string = jsonencode({
     username = "admin"
-    password = "admin"
+    password = "admin123"
   })
 }
