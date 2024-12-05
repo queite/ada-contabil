@@ -9,12 +9,17 @@ Para mais detalher veja a [descrição detalhada]](Chalenge.md)
 - Criação de objetos no S3 ativam uma função lambda
 - Função lambda envia notificação ao SNS
 - SNS envia mensagem para uma fila SQS
-- SQS ...
+- SQS ativa lambda que grava dados no RDS
 
 # Ferramentas
 - Terraform
 - Python
 - Boto3
+- Lambda
+- RDS
+- S3
+- SNS
+- SQS
 
 ## Como rodar
 Clone o repositório:
@@ -34,7 +39,7 @@ aws configure
 ```
 Entre na pasta do terraform:
 ```
-cd terraform/dev
+cd enviroment/dev
 ```
 Execute o terraform
 ```
@@ -42,7 +47,7 @@ terraform init
 terraform apply
 ```
 Após conclusão crie o .env:
-- Para isso acesse a pasta util e rode o comando abaixo no terminal
+- Para isso acesse a pasta utils e rode o comando abaixo no terminal
 ```
 python update_env.py
 ```

@@ -23,17 +23,23 @@ output "SQS_QUEUE_ARN" {
   description = "SNS Queue ARN"
 }
 
-output "ELASTICACHE_ENDPOINT" {
-  value       = aws_elasticache_cluster.contabil.cache_nodes[0].address
-  description = "Elasticache Cluster Endpoint"
-}
-
 output "LAMBDA_FUNCTION_ARN" {
   value       = aws_lambda_function.process_s3_file.arn
   description = "Lambda Function ARN"
 }
 
-output "ELASTICACHE_PORT" {
-  value = aws_elasticache_cluster.contabil.port
-  description = "Porta do Elasticache"
+output "RDS_DB_NAME" {
+  value = aws_db_proxy.db_proxy.name
+}
+output "RDS_PROXY_ENDPOINT" {
+  value = aws_db_proxy.db_proxy.endpoint
+}
+
+output "RDS_USERNAME" {
+  value = aws_db_instance.contabil.username
+}
+
+output "RDS_PASSWORD" {
+  value = aws_db_instance.contabil.password
+  sensitive = true
 }
