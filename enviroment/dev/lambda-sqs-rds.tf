@@ -63,35 +63,6 @@ resource "aws_iam_role_policy_attachment" "lambda_full_access_attach" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
-# Política para a Lambda
-data "aws_iam_policy_document" "lambda_network_policy" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "ec2:DescribeNetworkInterfaces",
-      "ec2:DescribeSubnets",
-      "ec2:DescribeSecurityGroups",
-      "ec2:CreateNetworkInterface",
-      "ec2:DeleteNetworkInterface",
-      "ec2:CreateNetworkInterface",
-      "ec2:DescribeNetworkInterfaces",
-      "ec2:DeleteNetworkInterface"
-    ]
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_policy" "lambda_network_policy" {
-  name        = "lambda_network_policy"
-  description = "Policy to allow Lambda to manage network interfaces"
-  policy      = data.aws_iam_policy_document.lambda_network_policy.json
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_network_policy_attach" {
-  role       = aws_iam_role.iam_for_lambda_sqs_rds.name
-  policy_arn = aws_iam_policy.lambda_network_policy.arn
-}
-
 resource "aws_lambda_function" "save-on-rds" {
   filename         = data.archive_file.lambda_sqs_rds.output_path
   function_name    = "save-on-rds"
@@ -110,6 +81,9 @@ resource "aws_lambda_function" "save-on-rds" {
   environment {
     variables = {
       RDS_PROXY_ENDPOINT = aws_db_proxy.db_proxy.endpoint
+      RDS_USERNAME = aws_db_instance.contabil.username
+      RDS_PASSWORD = aws_db_instance.contabil.password
+      RDS_DB_NAME = aws_db_instance.contabil.db_name
     }
   }
 
