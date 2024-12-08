@@ -70,7 +70,7 @@ resource "aws_lambda_function" "save-on-rds" {
   handler          = "lambda_sqs_rds.lambda_handler"
   source_code_hash = filebase64sha256(data.archive_file.lambda_sqs_rds.output_path)
   runtime          = "python3.8"
-  timeout = 60
+  timeout          = 30
 
   vpc_config {
     subnet_ids         = [aws_subnet.db_subnet_1.id, aws_subnet.db_subnet_2.id]
